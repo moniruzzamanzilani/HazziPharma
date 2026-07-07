@@ -39,8 +39,13 @@ namespace HazziPharma.Web.Controllers
         }
 
         // GET: PRODUCTS/Create
+        // GET: PRODUCTS/Create
         public IActionResult Create()
         {
+            ViewBag.Generics = _context.Generics.ToList();
+            ViewBag.Companies = _context.Companies.ToList();
+            ViewBag.Categories = _context.Categories.ToList();
+
             return View();
         }
 
@@ -49,7 +54,7 @@ namespace HazziPharma.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Stock")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,PurchasePrice,SalePrice,Stock,ReorderLevel,GenericId,CompanyId,CategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {
