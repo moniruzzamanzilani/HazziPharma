@@ -4,6 +4,7 @@ using HazziPharma.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HazziPharma.Web.Migrations
 {
     [DbContext(typeof(HazziPharmaDbContext))]
-    partial class HazziPharmaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260707145108_AddProductRelations")]
+    partial class AddProductRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

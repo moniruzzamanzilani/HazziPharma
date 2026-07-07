@@ -18,7 +18,12 @@ namespace HazziPharma.Web.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
-                .Property(p => p.Price)
+                .Property(p => p.PurchasePrice)
+                .HasPrecision(18, 2);
+
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.SalePrice)
                 .HasPrecision(18, 2);
         }
     }
