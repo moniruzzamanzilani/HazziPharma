@@ -43,47 +43,54 @@
         <thead>
             <tr>
                 <th width="30%">Medicine</th>
-                <th width="12%">Qty</th>
+                <th width="13%">Qty</th>
                 <th width="15%">Purchase Price</th>
                 <th width="15%">Batch No</th>
                 <th width="15%">Expiry Date</th>
-                <th width="15%">Sub Total</th>
+                <th width="16%">Sub Total</th>
+                <th width="8%">Action</th>
             </tr>
         </thead>
 
         <tbody id="purchaseItems">
             <tr>
-                <td>
-                    <select class="form-select">
-                        @foreach (var product in Model.Items[0].Products)
-                        {
-                            <option value="@product.Value">
-                                @product.Text
-                            </option>
-                        }
-                    </select>
-                </td>
+    <td>
+        <select class="form-select">
+            @foreach (var product in Model.Items[0].Products)
+            {
+                <option value="@product.Value">
+                    @product.Text
+                </option>
+            }
+        </select>
+    </td>
 
-                <td>
-                    <input type="number" class="form-control qty" value="1" min="1" />
-                </td>
+    <td>
+        <input type="number" class="form-control qty" value="1" min="1" />
+    </td>
 
-                <td>
-                    <input type="number" class="form-control price" step="0.01" min="0" />
-                </td>
+    <td>
+        <input type="number" class="form-control price" step="0.01" min="0" />
+    </td>
 
-                <td>
-                    <input type="text" class="form-control" />
-                </td>
+    <td>
+        <input type="text" class="form-control" />
+    </td>
 
-                <td>
-                    <input type="date" class="form-control" />
-                </td>
+    <td>
+        <input type="date" class="form-control" />
+    </td>
 
-                <td>
-                    <input type="text" class="form-control subtotal" readonly />
-                </td>
-            </tr>
+    <td>
+        <input type="text" class="form-control subtotal" readonly />
+    </td>
+
+    <td class="text-center">
+        <button type="button" class="btn btn-danger btn-sm btnRemove">
+            ❌
+        </button>
+    </td>
+</tr>
         </tbody>
     </table>
     <div class="row mt-3">
@@ -166,5 +173,26 @@ document.getElementById("btnAddItem").addEventListener("click", function () {
     tbody.appendChild(newRow);
 
 });
+// Remove Item
+document.addEventListener("click", function (e) {
 
+    if (e.target.classList.contains("btnRemove")) {
+
+        let tbody = document.getElementById("purchaseItems");
+
+        // কমপক্ষে ১টি Row থাকবে
+        if (tbody.rows.length == 1) {
+
+            alert("At least one item is required.");
+            return;
+        }
+
+        // যে Row-এর Delete Button চাপা হয়েছে সেটি Remove
+        e.target.closest("tr").remove();
+
+        // Grand Total Update
+        calculateGrandTotal();
+    }
+
+});
 </script>
