@@ -55,34 +55,30 @@
         <tbody id="purchaseItems">
             <tr>
     <td>
-        <select class="form-select">
-            @foreach (var product in Model.Items[0].Products)
-            {
-                <option value="@product.Value">
-                    @product.Text
-                </option>
-            }
-        </select>
+        <select asp-for="Items[0].ProductId"
+        asp-items="Model.Items[0].Products"
+        class="form-select">
+    <option value="">-- Select Medicine --</option>
+</select>
     </td>
 
     <td>
-        <input type="number" class="form-control qty" value="1" min="1" />
+       <input asp-for="Items[0].Quantity"class="form-control qty"min="1" />
     </td>
 
     <td>
-        <input type="number" class="form-control price" step="0.01" min="0" />
+        <input asp-for="Items[0].PurchasePrice" class="form-control price" />
+
+    <td>
+        <input asp-for="Items[0].BatchNo" class="form-control" />
     </td>
 
     <td>
-        <input type="text" class="form-control" />
+        <input asp-for="Items[0].ExpiryDate" type="date"class="form-control" />
     </td>
 
     <td>
-        <input type="date" class="form-control" />
-    </td>
-
-    <td>
-        <input type="text" class="form-control subtotal" readonly />
+       <input asp-for="Items[0].SubTotal"class="form-control subtotal"readonly />
     </td>
 
     <td class="text-center">
@@ -180,7 +176,7 @@ document.addEventListener("click", function (e) {
 
         let tbody = document.getElementById("purchaseItems");
 
-        // কমপক্ষে ১টি Row থাকবে
+        // minumun one Row 
         if (tbody.rows.length == 1) {
 
             alert("At least one item is required.");
