@@ -4,6 +4,7 @@ using HazziPharma.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HazziPharma.Web.Migrations
 {
     [DbContext(typeof(HazziPharmaDbContext))]
-    partial class HazziPharmaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260708034824_AddPurchase")]
+    partial class AddPurchase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +151,6 @@ namespace HazziPharma.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -156,46 +158,6 @@ namespace HazziPharma.Web.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Purchases");
-                });
-
-            modelBuilder.Entity("HazziPharma.Web.Models.PurchaseDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BatchNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PurchaseId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PurchasePrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SubTotal")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseId");
-
-                    b.ToTable("PurchaseDetails");
                 });
 
             modelBuilder.Entity("HazziPharma.Web.Models.Supplier", b =>
@@ -254,35 +216,6 @@ namespace HazziPharma.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("HazziPharma.Web.Models.PurchaseDetail", b =>
-                {
-                    b.HasOne("HazziPharma.Web.Models.Product", "Product")
-                        .WithMany("PurchaseDetails")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HazziPharma.Web.Models.Purchase", "Purchase")
-                        .WithMany("PurchaseDetails")
-                        .HasForeignKey("PurchaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Purchase");
-                });
-
-            modelBuilder.Entity("HazziPharma.Web.Models.Product", b =>
-                {
-                    b.Navigation("PurchaseDetails");
-                });
-
-            modelBuilder.Entity("HazziPharma.Web.Models.Purchase", b =>
-                {
-                    b.Navigation("PurchaseDetails");
                 });
 #pragma warning restore 612, 618
         }

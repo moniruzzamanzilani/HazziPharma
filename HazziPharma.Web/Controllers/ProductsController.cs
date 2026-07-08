@@ -18,7 +18,13 @@ namespace HazziPharma.Web.Controllers
         // GET: PRODUCTS
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            var products = await _context.Products
+                .Include(p => p.Generic)
+                .Include(p => p.Company)
+                .Include(p => p.Category)
+                .ToListAsync();
+
+            return View(products);
         }
         // GET: PRODUCTS/Details/5
         public async Task<IActionResult> Details(int? id)

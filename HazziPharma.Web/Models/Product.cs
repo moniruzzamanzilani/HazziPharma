@@ -30,5 +30,6 @@ namespace HazziPharma.Web.Models
         public Company? Company { get; set; }
 
         public Category? Category { get; set; }
+        public ICollection<PurchaseDetail>? PurchaseDetails { get; set; }
     }
 }
