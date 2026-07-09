@@ -1,0 +1,68 @@
+﻿@model IEnumerable<HazziPharma.Web.Models.Sale>
+
+@{
+    ViewData["Title"] = "Sales List";
+}
+
+<h2 class="mb-3">Sales List</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        + New Sale
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Sale No</th>
+            <th>Date</th>
+            <th>Invoice No</th>
+            <th>Total Amount</th>
+            <th>Items</th>
+            <th width="120">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>@item.SaleNo</td>
+
+            <td>@item.SaleDate.ToString("dd-MM-yyyy")</td>
+
+            <td>@item.InvoiceNo</td>
+
+            <td>@item.TotalAmount.ToString("0.00")</td>
+
+            <td>@item.SaleDetails.Count</td>
+
+         <td>
+            <a asp-action="Details"
+             asp-route-id="@item.Id"
+             class="btn btn-sm btn-info">
+                View
+            </a>
+          </td>
+
+             </tr>
+    }
+
+    </tbody>
+
+</table>

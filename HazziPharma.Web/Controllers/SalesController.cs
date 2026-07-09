@@ -15,7 +15,16 @@ namespace HazziPharma.Web.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var sales = await _context.Sales
+            .Include(s => s.SaleDetails)
+            .OrderByDescending(s => s.Id)
+            .ToListAsync();
 
+            return View(sales);
+        }
         // =========================
         // GET: Sales/Create
         // =========================
@@ -37,6 +46,10 @@ namespace HazziPharma.Web.Controllers
 
             return View(model);
         }
+        // =========================
+        // GET: Sales
+        // =========================
+
         [HttpGet]
         public async Task<IActionResult> GetProductInfo(int id)
         {
@@ -53,6 +66,24 @@ namespace HazziPharma.Web.Controllers
                 return NotFound();
 
             return Json(product);
+        }
+        // =========================
+        // GET: Sales/Details/5
+        // =========================
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var sale = await _context.Sales
+                .Include(s => s.SaleDetails)
+                .ThenInclude(d => d.Product)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (sale == null)
+            {
+                return NotFound();
+            }
+
+            return View(sale);
         }
         // =========================
         // POST: Sales/Create
@@ -147,7 +178,9 @@ namespace HazziPharma.Web.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Content("Sale Saved Successfully");
+            TempData["Success"] = "Sale Saved Successfully.";
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

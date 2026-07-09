@@ -1,0 +1,84 @@
+﻿@model HazziPharma.Web.Models.Sale
+
+@{
+    ViewData["Title"] = "Sale Details";
+}
+
+<h2 class="mb-3">Sale Details</h2>
+
+<div class="card mb-3">
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <strong>Sale No:</strong><br />
+                @Model.SaleNo
+            </div>
+
+            <div class="col-md-3">
+                <strong>Date:</strong><br />
+                @Model.SaleDate.ToString("dd-MM-yyyy")
+            </div>
+
+            <div class="col-md-3">
+                <strong>Invoice No:</strong><br />
+                @Model.InvoiceNo
+            </div>
+
+            <div class="col-md-3">
+                <strong>Total Amount:</strong><br />
+                @Model.TotalAmount.ToString("0.00")
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<table class="table table-bordered">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>Medicine</th>
+
+            <th>Qty</th>
+
+            <th>Price</th>
+
+            <th>Discount</th>
+
+            <th>Sub Total</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.SaleDetails)
+        {
+            <tr>
+
+                <td>@item.Product.Name</td>
+
+                <td>@item.Quantity</td>
+
+                <td>@item.SalePrice.ToString("0.00")</td>
+
+                <td>@item.Discount.ToString("0.00")</td>
+
+                <td>@item.SubTotal.ToString("0.00")</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Back to List
+</a>
