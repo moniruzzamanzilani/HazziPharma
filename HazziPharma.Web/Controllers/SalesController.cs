@@ -37,7 +37,23 @@ namespace HazziPharma.Web.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetProductInfo(int id)
+        {
+            var product = await _context.Products
+                .Where(p => p.Id == id)
+                .Select(p => new
+                {
+                    stock = p.Stock,
+                    salePrice = p.SalePrice
+                })
+                .FirstOrDefaultAsync();
 
+            if (product == null)
+                return NotFound();
+
+            return Json(product);
+        }
         // =========================
         // POST: Sales/Create
         // =========================

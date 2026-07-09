@@ -65,12 +65,18 @@
                     <input asp-for="Items[0].Stock"
                            class="form-control stock"
                            readonly />
+
+                    <small class="text-success stockText">
+                        Available: 0
+                    </small>
                 </td>
 
-                <td>
+               <td>
                     <input asp-for="Items[0].Quantity"
-                           class="form-control qty"
-                           min="1" />
+                        class="form-control qty"
+                        min="1" />
+
+                     <small class="text-danger qtyWarning"></small>
                 </td>
 
                 <td>
@@ -173,7 +179,26 @@
            let price = parseFloat(row.querySelector(".price").value) || 0;
 
            let discount = parseFloat(row.querySelector(".discount").value) || 0;
+           
+           let stock = parseFloat(row.querySelector(".stock").value) || 0;
+               let warning = row.querySelector(".qtyWarning");
+               if (!warning) return;
+     if (qty > stock) {
 
+        warning.innerText = "Only " + stock + " items available.";
+
+        row.querySelector(".qty").classList.add("is-invalid");
+
+        row.querySelector(".subtotal").value = "";
+
+        calculateGrandTotal();
+
+        return;
+    }
+
+       warning.innerText = "";
+
+      row.querySelector(".qty").classList.remove("is-invalid");
            let total = (qty * price) - discount;
 
            if (total < 0)
@@ -249,5 +274,32 @@
            }
 
        });
+       // Product Select করলে Stock ও Sale Price Auto Load
+document.addEventListener("change", async function (e) {
 
+    if (e.target.matches("select[name*='ProductId']")) {
+
+        let productId = e.target.value;
+
+        if (!productId)
+            return;
+
+        let row = e.target.closest("tr");
+
+        let response = await fetch(`/Sales/GetProductInfo?id=${productId}`);
+
+        if (!response.ok)
+            return;
+
+        let data = await response.json();
+
+        row.querySelector(".stock").value = data.stock;
+        row.querySelector(".price").value = data.salePrice;
+        row.querySelector(".stockText").innerText =
+            "Available: " + data.stock;
+
+        calculateRow(row);
+    }
+
+});
 </script>
