@@ -46,8 +46,14 @@ namespace HazziPharma.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PurchaseViewModel model)
         {
+           
             if (!ModelState.IsValid)
             {
+                var errors = ModelState
+      .Where(x => x.Value!.Errors.Count > 0)
+      .Select(x => $"{x.Key} => {string.Join(", ", x.Value!.Errors.Select(e => e.ErrorMessage))}");
+
+                return Content(string.Join("\n", errors));
                 model.Suppliers = await _context.Suppliers
                     .Select(s => new SelectListItem
                     {
@@ -56,15 +62,30 @@ namespace HazziPharma.Web.Controllers
                     })
                     .ToListAsync();
 
-                model.Items[0].Products = await _context.Products
-                    .Select(p => new SelectListItem
+                foreach (var item in model.Items)
+                {
+                    item.Products = await _context.Products
+                        .Select(p => new SelectListItem
+                        {
+                            Value = p.Id.ToString(),
+                            Text = p.Name
+                        })
+                        .ToListAsync();
+                }
+               
+                    foreach (var error in ModelState)
                     {
-                        Value = p.Id.ToString(),
-                        Text = p.Name
-                    })
-                    .ToListAsync();
+                        foreach (var item in error.Value.Errors)
+                        {
+                            Console.WriteLine($"{error.Key} => {item.ErrorMessage}");
+                        }
+                    }
 
-                return View(model);
+                    // Suppliers Load...
+                    // Products Load...
+
+                    return View(model);
+               
             }
 
             // Purchase Header
@@ -75,7 +96,7 @@ namespace HazziPharma.Web.Controllers
                 PurchaseDate = model.PurchaseDate,
                 InvoiceNo = model.InvoiceNo,
                 Remarks = model.Remarks,
-                TotalAmount = model.Items[0].SubTotal
+                TotalAmount = model.Items.Sum(x => x.SubTotal)
             };
 
             _context.Purchases.Add(purchase);
@@ -83,26 +104,29 @@ namespace HazziPharma.Web.Controllers
             await _context.SaveChangesAsync();
 
             // Purchase Detail
-            var detail = new PurchaseDetail
+            // Purchase Details Save + Stock Update
+            foreach (var item in model.Items)
             {
-                PurchaseId = purchase.Id,
-                ProductId = model.Items[0].ProductId,
-                PurchasePrice = model.Items[0].PurchasePrice,
-                Quantity = model.Items[0].Quantity,
-                BatchNo = model.Items[0].BatchNo,
-                ExpiryDate = model.Items[0].ExpiryDate,
-                SubTotal = model.Items[0].SubTotal
-            };
+                var detail = new PurchaseDetail
+                {
+                    PurchaseId = purchase.Id,
+                    ProductId = item.ProductId,
+                    PurchasePrice = item.PurchasePrice,
+                    Quantity = item.Quantity,
+                    BatchNo = item.BatchNo,
+                    ExpiryDate = item.ExpiryDate,
+                    SubTotal = item.SubTotal
+                };
 
-            _context.PurchaseDetails.Add(detail);
+                _context.PurchaseDetails.Add(detail);
 
-            // Stock Update
-            var product = await _context.Products
-                .FirstOrDefaultAsync(p => p.Id == model.Items[0].ProductId);
+                var product = await _context.Products
+                    .FirstOrDefaultAsync(p => p.Id == item.ProductId);
 
-            if (product != null)
-            {
-                product.Stock += model.Items[0].Quantity;
+                if (product != null)
+                {
+                    product.Stock += item.Quantity;
+                }
             }
 
             await _context.SaveChangesAsync();

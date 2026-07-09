@@ -68,6 +68,7 @@
 
     <td>
         <input asp-for="Items[0].PurchasePrice" class="form-control price" />
+    </td>
 
     <td>
         <input asp-for="Items[0].BatchNo" class="form-control" />
@@ -110,6 +111,27 @@
     </div>
 </form>
 <script>
+            function updateRowIndex() {
+
+            let rows = document.querySelectorAll("#purchaseItems tr");
+
+            rows.forEach(function (row, index) {
+
+                row.querySelectorAll("input, select").forEach(function (control) {
+
+                    if (control.name) {
+                        control.name = control.name.replace(/Items\[\d+\]/, `Items[${index}]`);
+                    }
+
+                    if (control.id) {
+                        control.id = control.id.replace(/Items_\d+__/, `Items_${index}__`);
+                    }
+
+                });
+
+            });
+
+        }
     function calculateGrandTotal() {
 
         let grandTotal = 0;
@@ -156,17 +178,17 @@ document.getElementById("btnAddItem").addEventListener("click", function () {
 
     let newRow = firstRow.cloneNode(true);
 
-    newRow.querySelectorAll("input").forEach(input => {
+        newRow.querySelectorAll("input").forEach(input => {
+        input.value = "";
+    });
 
-        if (input.type === "number")
-            input.value = "";
-
-        else
-            input.value = "";
-
+    newRow.querySelectorAll("select").forEach(select => {
+        select.selectedIndex = 0;
     });
 
     tbody.appendChild(newRow);
+
+    updateRowIndex();
 
 });
 // Remove Item
@@ -182,9 +204,11 @@ document.addEventListener("click", function (e) {
             alert("At least one item is required.");
             return;
         }
-
         // যে Row-এর Delete Button চাপা হয়েছে সেটি Remove
         e.target.closest("tr").remove();
+
+        // Row Index Update
+        updateRowIndex();
 
         // Grand Total Update
         calculateGrandTotal();
