@@ -1,0 +1,72 @@
+﻿@model IEnumerable<HazziPharma.Web.Models.Purchase>
+
+@{
+    ViewData["Title"] = "Purchase List";
+}
+
+<h2 class="mb-3">Purchase List</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    + New Purchase
+</a>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>Purchase No</th>
+
+            <th>Date</th>
+
+            <th>Supplier</th>
+
+            <th>Invoice No</th>
+
+            <th>Total Amount</th>
+
+            <th>Items</th>
+
+            <th width="120">Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.PurchaseNo</td>
+
+                <td>@item.PurchaseDate.ToString("dd-MM-yyyy")</td>
+
+                <td>@item.Supplier?.Name</td>
+
+                <td>@item.InvoiceNo</td>
+
+                <td>@item.TotalAmount.ToString("0.00")</td>
+
+                <td>@item.PurchaseDetails?.Count</td>
+
+                <td>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-sm btn-info">
+
+                        View
+
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

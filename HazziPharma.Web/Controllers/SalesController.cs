@@ -86,6 +86,24 @@ namespace HazziPharma.Web.Controllers
             return View(sale);
         }
         // =========================
+        // GET: Sales/Print/5
+        // =========================
+        [HttpGet]
+        public async Task<IActionResult> Print(int id)
+        {
+            var sale = await _context.Sales
+                .Include(s => s.SaleDetails)
+                .ThenInclude(d => d.Product)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (sale == null)
+            {
+                return NotFound();
+            }
+
+            return View(sale);
+        }
+        // =========================
         // POST: Sales/Create
         // =========================
         [HttpPost]

@@ -3,40 +3,85 @@
 @{
     ViewData["Title"] = "Sale Details";
 }
+<style>
 
-<h2 class="mb-3">Sale Details</h2>
+    @@media print {
 
-<div class="card mb-3">
-    <div class="card-body">
+        .no-print {
+            display: none !important;
+        }
 
-        <div class="row">
+        body {
+            margin: 20px;
+        }
 
-            <div class="col-md-3">
-                <strong>Sale No:</strong><br />
-                @Model.SaleNo
-            </div>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-            <div class="col-md-3">
-                <strong>Date:</strong><br />
-                @Model.SaleDate.ToString("dd-MM-yyyy")
-            </div>
+        table th,
+        table td {
+            border: 1px solid black;
+            padding: 6px;
+        }
 
-            <div class="col-md-3">
-                <strong>Invoice No:</strong><br />
-                @Model.InvoiceNo
-            </div>
+        h2 {
+            text-align: center;
+        }
+    }
 
-            <div class="col-md-3">
-                <strong>Total Amount:</strong><br />
-                @Model.TotalAmount.ToString("0.00")
-            </div>
+</style>
 
-        </div>
+<div class="text-center mb-4">
+
+    <h2 class="mb-1 fw-bold">
+        Hazzi Pharma
+    </h2>
+
+    <p class="mb-0">
+        South Monipur, Mirpur-2, Dhaka
+    </p>
+
+    <p class="mb-0">
+        Mobile: 01303385670
+    </p>
+
+    <hr />
+
+    <h4 class="fw-bold">
+        SALES INVOICE
+    </h4>
 
     </div>
-</div>
+<div class="row mb-4">
 
-<table class="table table-bordered">
+    <div class="col-6">
+
+        <strong>Sale No</strong> :
+        @Model.SaleNo
+
+        <br />
+
+        <strong>Invoice No</strong> :
+        @Model.InvoiceNo
+
+    </div>
+
+    <div class="col-6 text-end">
+
+        <strong>Date</strong> :
+        @Model.SaleDate.ToString("dd-MM-yyyy")
+
+        <br />
+
+        <strong>Total Amount</strong> :
+        @Model.TotalAmount.ToString("0.00")
+
+    </div>
+
+</div>
+  <table class="table table-bordered">
 
     <thead class="table-dark">
 
@@ -79,6 +124,16 @@
 
 </table>
 
-<a asp-action="Index" class="btn btn-secondary">
-    Back to List
-</a>
+<div class="mt-3 no-print">
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back to List
+    </a>
+
+    <a asp-action="Print"
+       asp-route-id="@Model.Id"
+       class="btn btn-primary">
+        Print Receipt
+    </a>
+
+</div>

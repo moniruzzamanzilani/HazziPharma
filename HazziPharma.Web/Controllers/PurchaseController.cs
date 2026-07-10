@@ -15,6 +15,20 @@ namespace HazziPharma.Web.Controllers
         {
             _context = context;
         }
+        // =========================
+        // GET: Purchase
+        // =========================
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var purchases = await _context.Purchases
+                .Include(p => p.Supplier)
+                .Include(p => p.PurchaseDetails)
+                .OrderByDescending(p => p.Id)
+                .ToListAsync();
+
+            return View(purchases);
+        }
 
         public async Task<IActionResult> Create()
         {
@@ -107,6 +121,7 @@ namespace HazziPharma.Web.Controllers
             // Purchase Details Save + Stock Update
             foreach (var item in model.Items)
             {
+         
                 var detail = new PurchaseDetail
                 {
                     PurchaseId = purchase.Id,
