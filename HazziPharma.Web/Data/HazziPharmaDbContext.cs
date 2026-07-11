@@ -21,6 +21,8 @@ namespace HazziPharma.Web.Data
        
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleDetail> SaleDetails { get; set; }
+        public DbSet<CompanyProfile> CompanyProfiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
