@@ -1,0 +1,118 @@
+﻿@model HazziPharma.Web.ViewModels.PurchaseReportViewModel
+
+@{
+    ViewData["Title"] = "Purchase Report";
+}
+
+<div class="text-center mb-4">
+
+    <h2 class="mb-0">🏥 Hazzi Pharma</h2>
+
+    <h5 class="text-secondary">Purchase Report</h5>
+
+    <small>
+        Generated On:
+        @DateTime.Now.ToString("dd-MM-yyyy hh:mm tt")
+    </small>
+
+</div>
+
+<form method="get">
+
+    <div class="row mb-3">
+
+        <div class="col-md-3">
+            <label>From Date</label>
+            <input asp-for="FromDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label>To Date</label>
+            <input asp-for="ToDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3 align-self-end">
+
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <button type="button"
+                    onclick="window.print()"
+                    class="btn btn-success ms-2">
+                Print
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+
+        <tr>
+            <th>Action</th>
+            <th>Supplier</th>
+            <th>Purchase No</th>
+            <th>Invoice</th>
+            <th>Date</th>
+            <th class="text-end">Amount</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+@foreach(var item in Model.Purchases)
+{
+    <tr>
+                <td>
+                    <a asp-controller="Purchase"
+                       asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-sm btn-info">
+                        Details
+                    </a>
+                </td>
+        <td>@item.Supplier?.Name</td>
+
+        <td>@item.PurchaseNo</td>
+
+        <td>@item.InvoiceNo</td>
+
+        <td>@item.PurchaseDate.ToString("dd-MM-yyyy")</td>
+
+        <td class="text-end">
+            @item.TotalAmount.ToString("N2")
+        </td>
+
+    </tr>
+}
+
+    </tbody>
+
+    <tfoot class="table-secondary">
+
+        <tr>
+
+            <th colspan="5" class="text-end">
+                Grand Total
+            </th>
+
+            <th class="text-end">
+                @Model.TotalPurchaseAmount.ToString("N2")
+            </th>
+
+        </tr>
+
+    </tfoot>
+
+</table>
+
+<div class="mt-2">
+    <strong>Total Records:</strong> @Model.Purchases.Count
+</div>

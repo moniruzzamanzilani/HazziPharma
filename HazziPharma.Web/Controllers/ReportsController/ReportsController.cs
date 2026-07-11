@@ -13,32 +13,60 @@ namespace HazziPharma.Web.Controllers
         {
             _context = context;
         }
-        
+
+        // ==========================
+        // Stock Report
+        // ==========================
         [HttpGet]
-        public async Task<IActionResult> SalesReport(DateTime? fromDate, DateTime? toDate)
+        public async Task<IActionResult> StockReport()
         {
-            var query = _context.Sales.AsQueryable();
-
-            if (fromDate.HasValue)
+            var model = new StockReportViewModel
             {
-                query = query.Where(x => x.SaleDate.Date >= fromDate.Value.Date);
-            }
+                Products = await _context.Products
+                    .Include(p => p.Generic)
+                    .Include(p => p.Company)
+                    .Include(p => p.Category)
+                    .OrderBy(p => p.Name)
+                    .ToListAsync(),
 
-            if (toDate.HasValue)
-            {
-                query = query.Where(x => x.SaleDate.Date <= toDate.Value.Date);
-            }
+                TotalMedicines = await _context.Products.CountAsync(),
 
-            var sales = await query
-                .OrderByDescending(x => x.SaleDate)
+                LowStockCount = await _context.Products
+                    .CountAsync(p => p.Stock > 0 && p.Stock <= p.ReorderLevel),
+
+                OutOfStockCount = await _context.Products
+                    .CountAsync(p => p.Stock == 0)
+            };
+
+            return View(model);
+        }
+
+        // ==========================
+        // Expiry Report
+        // ==========================
+        [HttpGet]
+        public async Task<IActionResult> ExpiryReport()
+        {
+            var medicines = await _context.PurchaseDetails
+                .Include(x => x.Product)
+                .Include(x => x.Purchase)
+                    .ThenInclude(p => p.Supplier)
+                .Where(x => x.ExpiryDate.HasValue)
+                .OrderBy(x => x.ExpiryDate)
                 .ToListAsync();
 
-            var model = new SalesReportViewModel
+            var model = new ExpiryReportViewModel
             {
-                FromDate = fromDate,
-                ToDate = toDate,
-                Sales = sales,
-                TotalSalesAmount = sales.Sum(x => x.TotalAmount)
+                Medicines = medicines,
+
+                TotalMedicines = medicines.Count,
+
+                ExpiredCount = medicines.Count(x =>
+                    x.ExpiryDate!.Value.Date < DateTime.Today),
+
+                ExpiringSoonCount = medicines.Count(x =>
+                    x.ExpiryDate!.Value.Date >= DateTime.Today &&
+                    x.ExpiryDate!.Value.Date <= DateTime.Today.AddDays(30))
             };
 
             return View(model);

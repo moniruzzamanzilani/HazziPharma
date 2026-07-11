@@ -1,0 +1,155 @@
+﻿@model HazziPharma.Web.ViewModels.ExpiryReportViewModel
+
+@{
+    ViewData["Title"] = "Expiry Report";
+}
+
+<div class="text-center mb-4">
+
+    <h2 class="mb-0">🏥 Hazzi Pharma</h2>
+
+    <h5 class="text-secondary">Expiry Report</h5>
+
+    <small>
+        Generated On:
+        @DateTime.Now.ToString("dd-MM-yyyy hh:mm tt")
+    </small>
+
+</div>
+
+<div class="mb-3">
+
+    <button type="button"
+            onclick="window.print()"
+            class="btn btn-success">
+        Print
+    </button>
+
+</div>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card border-primary shadow-sm">
+            <div class="card-body text-center">
+                <h6>Total Medicines</h6>
+                <h3>@Model.TotalMedicines</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-danger shadow-sm">
+            <div class="card-body text-center">
+                <h6>Expired</h6>
+                <h3>@Model.ExpiredCount</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-warning shadow-sm">
+            <div class="card-body text-center">
+                <h6>Expiring Soon</h6>
+                <h3>@Model.ExpiringSoonCount</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>Medicine</th>
+            <th>Supplier</th>
+            <th>Batch</th>
+            <th>Purchase Date</th>
+            <th>Expiry Date</th>
+            <th>Days Left</th>
+            <th>Status</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.Medicines)
+        {
+            var rowClass = "";
+
+            if (item.ExpiryDate!.Value.Date < DateTime.Today)
+            {
+                rowClass = "table-danger";
+            }
+            else if (item.ExpiryDate.Value.Date <= DateTime.Today.AddDays(30))
+            {
+                rowClass = "table-warning";
+            }
+            else
+            {
+                rowClass = "table-success";
+            }
+
+            <tr class="@rowClass">
+
+                <td>@item.Product?.Name</td>
+
+                <td>@item.Purchase?.Supplier?.Name</td>
+
+                <td>@item.BatchNo</td>
+
+                <td>@item.Purchase?.PurchaseDate.ToString("dd-MM-yyyy")</td>
+
+                <td>@item.ExpiryDate?.ToString("dd-MM-yyyy")</td>
+
+                <td>
+                    @{
+                        var days = (item.ExpiryDate!.Value.Date - DateTime.Today).Days;
+                    }
+
+                    @if (days < 0)
+                    {
+                        <span class="text-danger fw-bold">
+                            Expired @Math.Abs(days) days ago
+                        </span>
+                    }
+                    else
+                    {
+                        <span>@days Days</span>
+                    }
+                </td>
+
+                <td>
+
+                    @if (item.ExpiryDate!.Value.Date < DateTime.Today)
+                    {
+                        <span class="badge bg-danger">
+                            Expired
+                        </span>
+                    }
+                    else if (item.ExpiryDate.Value.Date <= DateTime.Today.AddDays(30))
+                    {
+                        <span class="badge bg-warning text-dark">
+                            Expiring Soon
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">
+                            Safe
+                        </span>
+                    }
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

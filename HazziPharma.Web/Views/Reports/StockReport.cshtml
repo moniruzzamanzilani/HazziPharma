@@ -1,0 +1,110 @@
+﻿@model HazziPharma.Web.ViewModels.StockReportViewModel
+
+@{
+    ViewData["Title"] = "Stock Report";
+}
+
+<div class="text-center mb-4">
+    <h2 class="mb-0">🏥 Hazzi Pharma</h2>
+    <h5 class="text-secondary">Stock Report</h5>
+
+    <small>
+        Generated On:
+        @DateTime.Now.ToString("dd-MM-yyyy hh:mm tt")
+    </small>
+</div>
+
+<div class="mb-3">
+    <button type="button"
+            onclick="window.print()"
+            class="btn btn-success">
+        <i class="bi bi-printer"></i> Print
+    </button>
+</div>
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card border-primary shadow-sm">
+            <div class="card-body text-center">
+                <h6>Total Medicines</h6>
+                <h3>@Model.TotalMedicines</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-warning shadow-sm">
+            <div class="card-body text-center">
+                <h6>Low Stock</h6>
+                <h3>@Model.LowStockCount</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-danger shadow-sm">
+            <div class="card-body text-center">
+                <h6>Out of Stock</h6>
+                <h3>@Model.OutOfStockCount</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark text-center">
+        <tr>
+            <th>Medicine</th>
+            <th>Generic</th>
+            <th>Company</th>
+            <th>Category</th>
+            <th class="text-center">Stock</th>
+            <th class="text-center">Reorder Level</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.Products)
+        {
+            var rowClass = "";
+
+            if (item.Stock == 0)
+                rowClass = "table-danger";
+            else if (item.Stock <= item.ReorderLevel)
+                rowClass = "table-warning";
+
+            <tr class="@rowClass">
+
+                <td>@item.Name</td>
+                <td>@item.Generic?.Name</td>
+                <td>@item.Company?.Name</td>
+                <td>@item.Category?.Name</td>
+                <td class="text-center">@item.Stock</td>
+                <td class="text-center">@item.ReorderLevel</td>
+
+                <td>
+                    @if (item.Stock == 0)
+                    {
+                        <span class="badge bg-danger">Out of Stock</span>
+                    }
+                    else if (item.Stock <= item.ReorderLevel)
+                    {
+                        <span class="badge bg-warning text-dark">Low Stock</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">In Stock</span>
+                    }
+                </td>
+
+            </tr>
+        }
+       
+
+    </tbody>
+
+</table>
+
