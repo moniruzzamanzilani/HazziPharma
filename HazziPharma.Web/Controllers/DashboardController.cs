@@ -2,9 +2,11 @@
 using HazziPharma.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HazziPharma.Web.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly HazziPharmaDbContext _context;

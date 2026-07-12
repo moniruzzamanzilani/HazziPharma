@@ -1,9 +1,10 @@
-﻿using HazziPharma.Web.Models;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using HazziPharma.Web.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HazziPharma.Web.Data
 {
-    public class HazziPharmaDbContext : DbContext
+    public class HazziPharmaDbContext : IdentityDbContext<ApplicationUser>
     {
         public HazziPharmaDbContext(DbContextOptions<HazziPharmaDbContext> options)
             : base(options)
@@ -28,6 +29,8 @@ namespace HazziPharma.Web.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.PurchasePrice)
                 .HasPrecision(18, 2);
