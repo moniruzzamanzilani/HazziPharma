@@ -1,0 +1,65 @@
+@model HazziPharma.Web.Models.Expense
+
+@{
+    ViewData["Title"] = "Expense Details";
+}
+
+<div class="card shadow">
+
+    <div class="card-header bg-info text-white">
+        <h4>Expense Details</h4>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th width="220">Expense Date</th>
+                <td>@Model.ExpenseDate.ToString("dd-MMM-yyyy")</td>
+            </tr>
+
+            <tr>
+                <th>Category</th>
+                <td>@Model.ExpenseCategory?.Name</td>
+            </tr>
+
+            <tr>
+                <th>Amount</th>
+                <td>৳ @Model.Amount.ToString("N2")</td>
+            </tr>
+
+            <tr>
+                <th>Reference No</th>
+                <td>@Model.ReferenceNo</td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>@Model.Description</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="card-footer">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+
+            Edit
+
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
