@@ -43,6 +43,14 @@
             </div>
         </div>
     </div>
+    <div class="col-md-6 mb-3">
+        <div class="card border-danger">
+            <div class="card-body">
+                <h5>Total Expense Amount</h5>
+                <h3>৳ @Model.TotalExpenseAmount.ToString("N2")</h3>
+            </div>
+        </div>
+    </div>
     <div class="row mt-3">
 
         <div class="col-md-3">
@@ -80,64 +88,18 @@
                 </div>
             </div>
         </div>
-
+        <div class="col-md-3">
+            <div class="card border-dark shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Today's Expense</h6>
+                    <h5>৳ @Model.TodayExpenseAmount.ToString("N2")</h5>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
 
-    <div class="col-md-6 mb-3">
-
-        <div class="card border-danger">
-
-            <div class="card-body">
-
-                <h5>⚠ Low Stock Medicines</h5>
-
-                <h2 class="text-danger">
-                    @Model.LowStockCount
-                </h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-3 mb-3">
-
-        <div class="card border-danger">
-
-            <div class="card-body text-center">
-
-                <h5>🚨 Expired</h5>
-
-                <h2 class="text-danger">
-                    @Model.ExpiredMedicineCount
-                </h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-3 mb-3">
-
-        <div class="card border-warning">
-
-            <div class="card-body text-center">
-
-                <h5>⏰ Expiring Soon</h5>
-
-                <h2 class="text-warning">
-                    @Model.ExpiringSoonCount
-                </h2>
-
-            </div>
-
-        </div>
-
-    </div>
+ 
     <div class="col-md-6 mt-4">
 
         <div class="card border-primary">
@@ -275,29 +237,52 @@
             </table>
 
         </div>
+        <div class="card border-dark mt-4">
+
+    <div class="card-header bg-dark text-white">
+        💸 Recent Expenses
+    </div>
+
+    <table class="table table-sm mb-0">
+
+        <thead>
+
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th class="text-end">Amount</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.RecentExpenses)
+            {
+                <tr>
+
+                    <td>@item.ExpenseDate.ToString("dd-MM-yyyy")</td>
+
+                    <td>@item.ExpenseCategory?.Name</td>
+
+                    <td class="text-end">
+                        ৳ @item.Amount.ToString("N2")
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+        </div>
 
     </div>
 </div>
-<div class="row">
-
-    <div class="col-md-6 mb-3">
-        <div class="card border-success">
-            <div class="card-body">
-                <h5>Total Purchase Amount</h5>
-                <h3>৳ @Model.TotalPurchaseAmount.ToString("0.00")</h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 mb-3">
-        <div class="card border-primary">
-            <div class="card-body">
-                <h5>Total Sales Amount</h5>
-                <h3>৳ @Model.TotalSalesAmount.ToString("0.00")</h3>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4">
+    
+   
+     <div class="row mt-4">
 
         <div class="col-md-6">
 
@@ -406,4 +391,3 @@
         </div>
 
     </div>
-</div>

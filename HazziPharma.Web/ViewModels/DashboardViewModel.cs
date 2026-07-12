@@ -28,9 +28,17 @@ namespace HazziPharma.Web.ViewModels
         public decimal TodayPurchaseAmount { get; set; }
 
         public decimal TodaySalesAmount { get; set; }
+       
+        public int TotalExpenses { get; set; }
+
+        public decimal TotalExpenseAmount { get; set; }
+
+        public decimal TodayExpenseAmount { get; set; }
         public List<Purchase> RecentPurchases { get; set; } = new();
 
         public List<Sale> RecentSales { get; set; } = new();
+
+        public List<Expense> RecentExpenses { get; set; } = new();
         public List<Product> LowStockProducts { get; set; } = new();
         public List<ProductSalesViewModel> TopSellingProducts { get; set; } = new();
         public List<PurchaseDetail> ExpiringSoonMedicines { get; set; } = new();
