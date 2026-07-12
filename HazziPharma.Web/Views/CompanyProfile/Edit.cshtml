@@ -1,12 +1,13 @@
-﻿@model HazziPharma.Web.Models.CompanyProfile
-
+﻿@model HazziPharma.Web.ViewModels.CompanyProfileViewModel
 @{
     ViewData["Title"] = "Edit Company Profile";
 }
 
 <h2 class="mb-4">Edit Company Profile</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit"
+      method="post"
+      enctype="multipart/form-data">
 
     <input asp-for="Id" type="hidden" />
 
@@ -55,17 +56,50 @@
             <label asp-for="BIN" class="form-label"></label>
             <input asp-for="BIN" class="form-control" />
         </div>
-
     </div>
+   
 
-    <button type="submit" class="btn btn-primary">
-        Update Company Profile
-    </button>
+        <div class="mb-3">
 
-</form>
+            <label asp-for="LogoFile" class="form-label">
+                Change Company Logo
+            </label>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            <input asp-for="LogoFile"
+                   type="file"
+                   class="form-control"
+                   accept=".png,.jpg,.jpeg" />
+
+            <span asp-validation-for="LogoFile"
+                  class="text-danger"></span>
+
+        </div>
+    @if (!string.IsNullOrEmpty(Model.LogoPath))
+    {
+        <div class="mb-3">
+
+            <label class="form-label">
+                Current Logo
+            </label>
+
+            <br />
+
+            <img src="@Model.LogoPath"
+                 style="height:120px"
+                 class="border rounded p-2" />
+
+        </div>
     }
+    
+
+            <button type="submit" class="btn btn-primary">
+             Update Company Profile
+            </button>
+
+            </form>
+
+        @section Scripts {
+         @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+         }
 }
