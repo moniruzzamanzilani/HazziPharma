@@ -1,13 +1,17 @@
-﻿using HazziPharma.Web.Data;
+﻿
+using HazziPharma.Web.Data;
 using HazziPharma.Web.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using HazziPharma.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using HazziPharma.Web.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IO;
+
 namespace HazziPharma.Web.Controllers
 {
+    [Authorize]
     public class CompanyProfileController : Controller
     {
         private readonly HazziPharmaDbContext _context;

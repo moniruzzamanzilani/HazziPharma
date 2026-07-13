@@ -1,9 +1,10 @@
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HazziPharma.Web.Models;
 using HazziPharma.Web.Data;
 
+[Authorize]
 public class ExpensesController : Controller
 {
     private readonly HazziPharmaDbContext _context;

@@ -1,4 +1,5 @@
-﻿using HazziPharma.Web.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using HazziPharma.Web.Data;
 using HazziPharma.Web.Models;
 using HazziPharma.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HazziPharma.Web.Controllers
 {
+    [Authorize]
     public class SalesController : Controller
     {
         private readonly HazziPharmaDbContext _context;

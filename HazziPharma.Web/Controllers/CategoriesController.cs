@@ -1,4 +1,4 @@
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HazziPharma.Web.Models;
@@ -6,6 +6,7 @@ using HazziPharma.Web.Data;
 
 namespace HazziPharma.Web.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly HazziPharmaDbContext _context;
