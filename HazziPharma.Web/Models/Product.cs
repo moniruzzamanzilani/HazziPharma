@@ -31,5 +31,6 @@ namespace HazziPharma.Web.Models
 
         public Category? Category { get; set; }
         public ICollection<PurchaseDetail> PurchaseDetails { get; set; } = new List<PurchaseDetail>();
+        public ICollection<SaleDetail> SaleDetails { get; set; } = new List<SaleDetail>();
     }
 }

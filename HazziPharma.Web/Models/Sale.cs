@@ -7,13 +7,19 @@ namespace HazziPharma.Web.Models
         public int Id { get; set; }
 
         [Required]
-        public string SaleNo { get; set; }
+        public string? SaleNo { get; set; }
 
         [Required]
         public DateTime SaleDate { get; set; }
 
         [Required]
         public decimal TotalAmount { get; set; }
+
+        public decimal Discount { get; set; }
+
+        public decimal PaidAmount { get; set; }
+
+        public decimal DueAmount { get; set; }
 
         public string? InvoiceNo { get; set; }
 

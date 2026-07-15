@@ -18,7 +18,7 @@ namespace HazziPharma.Web.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() 
         {
             var sales = await _context.Sales
             .Include(s => s.SaleDetails)
@@ -110,7 +110,7 @@ namespace HazziPharma.Web.Controllers
         // =========================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SaleViewModel model)
+        public async Task<IActionResult> Create(SaleViewModel model, string action)
         {
             // ===== DEBUG START =====
             if (!ModelState.IsValid)
@@ -200,7 +200,14 @@ namespace HazziPharma.Web.Controllers
 
             TempData["Success"] = "Sale Saved Successfully.";
 
+            if (action == "print")
+            {
+                return RedirectToAction(nameof(Print), new { id = sale.Id });
+            }
+
             return RedirectToAction(nameof(Index));
+
+         
         }
     }
 }

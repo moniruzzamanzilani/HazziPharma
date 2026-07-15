@@ -1,0 +1,356 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] | Hazzi Pharma</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HazziPharma.Web.styles.css" asp-append-version="true" />
+</head>
+@{
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+}
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+        <div class="container-fluid">
+
+            <a class="navbar-brand fw-bold fs-4 text-white"
+               asp-controller="Dashboard"
+               asp-action="Index">
+                💊 Hazzi Pharma
+            </a>
+
+            <div class="ms-auto">
+
+                <partial name="_LoginPartial" />
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div id="sidebar" class="col-md-2 border-end min-vh-100 pt-3">
+                <div class="sidebar-toggle">
+
+                    <button id="menuToggle" class="btn btn-primary">
+
+                        <i class="bi bi-list"></i>
+
+                    </button>
+
+
+
+                </div>
+                <div id="sidebarMenu">
+                 <div class="accordion accordion-flush" id="sidebarAccordion">
+
+                    <!-- Dashboard -->
+                    <a class="accordion-button sidebar-accordion dashboard-link border-0 text-decoration-none
+                        @(currentController == "Dashboard" ? "" : "collapsed")"
+                       asp-controller="Dashboard"
+                       asp-action="Index">
+
+                        <i class="bi bi-speedometer2 me-2"></i>
+                        Dashboard
+
+                    </a>
+
+                        <div class="accordion-item sidebar-item border-0">
+
+                        <h2 class="accordion-header">
+                                <button class="accordion-button sidebar-accordion
+                                    @(currentController == "Products" ||
+                                          currentController == "Generics" ||
+                                          currentController == "Companies" ||
+                                          currentController == "Categories" ||
+                                          currentController == "Suppliers"
+                                          ? "" : "collapsed")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#medicineMenu">
+
+                                    <i class="bi bi-database me-2"></i>
+                                    Master Data
+
+                            </button>
+
+                        </h2>
+
+                            <div id="medicineMenu"
+                                 class="accordion-collapse collapse
+                                @(currentController == "Products" ||
+                                   currentController == "Generics" ||
+                                   currentController == "Companies" ||
+                                   currentController == "Categories" ||
+                                   currentController == "Suppliers"
+                                   ? "show" : "")">
+
+                            <div class="accordion-body p-0">
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="Products"
+                                   asp-action="Index">
+                                    Medicines
+                                </a>
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="Generics"
+                                   asp-action="Index">
+                                    Generics
+                                </a>
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="Companies"
+                                   asp-action="Index">
+                                    Companies
+                                </a>
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="Categories"
+                                   asp-action="Index">
+                                    Categories
+                                </a>
+                                <a class="nav-link ps-5"
+                                   asp-controller="Suppliers"
+                                   asp-action="Index">
+                                    Suppliers
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="accordion-item sidebar-item">
+
+                        <h2 class="accordion-header">
+
+                            <button class="accordion-button sidebar-accordion
+                                @(currentController == "Suppliers" ||
+                                      currentController == "Purchase" ||
+                                      currentController == "Sales"
+                                      ? "" : "collapsed")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#purchaseMenu">
+
+                                <i class="bi bi-bag-check-fill me-2"></i>
+                                Purchase Management
+
+                            </button>
+
+                        </h2>
+
+                        <div id="purchaseMenu"
+                             class="accordion-collapse collapse
+                            @(currentController == "Suppliers" ||
+                               currentController == "Purchase" ||
+                               currentController == "Sales"
+                               ? "show" : "")">
+
+                            <div class="accordion-body p-0">
+
+                        
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="Purchase"
+                                   asp-action="Index">
+                                    Purchases
+                                </a>
+
+                                
+                            </div>
+
+                        </div>
+
+                    </div>
+                        <div class="accordion-item sidebar-item">
+
+                            <h2 class="accordion-header">
+
+                                <button class="accordion-button sidebar-accordion
+                                    @(currentController == "Sales" ? "" : "collapsed")"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#salesMenu">
+
+                                    <i class="bi bi-cash-stack me-2"></i>
+                                    Sales Management
+
+                                </button>
+
+                            </h2>
+
+                            <div id="salesMenu"
+                                 class="accordion-collapse collapse
+                                @(currentController == "Sales" ? "show" : "")">
+
+                                <div class="accordion-body p-0">
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Sales"
+                                       asp-action="Index">
+                                        Sales
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    <div class="accordion-item sidebar-item">
+
+                        <h2 class="accordion-header">
+
+                            <button class="accordion-button sidebar-accordion
+                                @(currentController == "Expenses" ||
+                                      currentController == "ExpenseCategories"
+                                      ? "" : "collapsed")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#expenseMenu">
+
+                                <i class="bi bi-wallet2 me-2"></i>
+                                Expense Management
+
+                            </button>
+
+                        </h2>
+
+                        <div id="expenseMenu"
+                             class="accordion-collapse collapse
+                            @(currentController == "Expenses" ||
+                               currentController == "ExpenseCategories"
+                               ? "show" : "")">
+
+                            <div class="accordion-body p-0">
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="Expenses"
+                                   asp-action="Index">
+                                    Expenses
+                                </a>
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="ExpenseCategories"
+                                   asp-action="Index">
+                                    Expense Categories
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="accordion-item sidebar-item">
+
+                        <h2 class="accordion-header">
+
+                            <button class="accordion-button sidebar-accordion
+                                @(currentController == "CompanyProfile"
+                                      ? "" : "collapsed")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#settingsMenu">
+
+                                <i class="bi bi-gear me-2"></i>
+                                Settings
+
+                            </button>
+
+                        </h2>
+
+                        <div id="settingsMenu"
+                             class="accordion-collapse collapse
+                            @(currentController == "CompanyProfile"
+                               ? "show" : "")">
+
+                            <div class="accordion-body p-0">
+
+                                <a class="nav-link ps-5"
+                                   asp-controller="CompanyProfile"
+                                   asp-action="Index">
+                                    Company Profile
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                 </div>
+               </div>
+
+            </div>
+            <div id="mainContent" class="col p-4">
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+        const btn = document.getElementById("menuToggle");
+        const menu = document.getElementById("sidebarMenu");
+
+        // আগের অবস্থা Restore করবে
+        if (localStorage.getItem("sidebarMenu") === "open") {
+        menu.classList.add("show");
+        }
+
+        btn.addEventListener("click", function () {
+
+    if (menu.classList.contains("show")) {
+
+        // Menu Hide করার আগে সব Accordion বন্ধ করবে
+        document.querySelectorAll(".accordion-collapse").forEach(function (item) {
+            item.classList.remove("show");
+        });
+
+        document.querySelectorAll(".sidebar-accordion").forEach(function (item) {
+            item.classList.add("collapsed");
+            item.setAttribute("aria-expanded", "false");
+        });
+
+        localStorage.setItem("sidebarMenu", "closed");
+
+    } else {
+
+        localStorage.setItem("sidebarMenu", "open");
+
+    }
+
+         menu.classList.toggle("show");
+
+});
+
+        });
+    </script>
+</body>
+</html> 

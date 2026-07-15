@@ -1,15 +1,15 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using HazziPharma.Web.Data
+﻿@using HazziPharma.Web.Data
+@using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
+<ul class="navbar-nav ms-auto align-items-center">
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <span class="nav-link text-dark">
+        <li class="nav-item me-3">
+            <span class="text-white">
+                <i class="bi bi-person-circle"></i>
                 Hello @User.Identity?.Name!
             </span>
         </li>
@@ -20,9 +20,8 @@
                   method="post">
 
                 <button type="submit"
-                        class="nav-link btn btn-link text-dark"
-                        style="border:none;">
-                    Logout
+                        class="btn btn-link text-white text-decoration-none p-0">
+                    <i class="bi bi-box-arrow-right"></i> Logout
                 </button>
 
             </form>
@@ -31,10 +30,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark"
+            <a class="nav-link text-white"
                asp-area="Identity"
                asp-page="/Account/Login">
-                Login
+                <i class="bi bi-box-arrow-in-right"></i> Login
             </a>
         </li>
     }

@@ -20,6 +20,11 @@ namespace HazziPharma.Web.Models
         public string? InvoiceNo { get; set; }
 
         public decimal TotalAmount { get; set; }
+        public decimal Discount { get; set; }
+
+        public decimal PaidAmount { get; set; }
+
+        public decimal DueAmount { get; set; }
 
         public string? Remarks { get; set; }
         public ICollection<PurchaseDetail>? PurchaseDetails { get; set; }

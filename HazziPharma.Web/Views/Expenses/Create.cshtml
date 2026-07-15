@@ -16,16 +16,27 @@
 
             <label class="form-label">Expense Category</label>
 
-            <select asp-for="ExpenseCategoryId" class="form-select">
+            <div class="d-flex align-items-start">
 
-                <option value="">-- Select Category --</option>
+                <select asp-for="ExpenseCategoryId" class="form-select me-2">
 
-                @foreach (var item in ViewBag.ExpenseCategories)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }
+                    <option value="">-- Select Category --</option>
 
-            </select>
+                    @foreach (var item in ViewBag.ExpenseCategories)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+
+                </select>
+
+                <a asp-controller="ExpenseCategories"
+                   asp-action="Create"
+                   target="_blank"
+                   class="btn btn-outline-primary">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+
+            </div>
 
             <span asp-validation-for="ExpenseCategoryId"
                   class="text-danger"></span>

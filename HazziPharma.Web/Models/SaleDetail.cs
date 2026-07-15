@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HazziPharma.Web.Models
 {
@@ -6,23 +7,26 @@ namespace HazziPharma.Web.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public int SaleId { get; set; }
 
+        [Required]
         public int ProductId { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal SalePrice { get; set; }
 
         public int Quantity { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Discount { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal SubTotal { get; set; }
 
         // Navigation
-        [ForeignKey(nameof(SaleId))]
-        public Sale Sale { get; set; }
+        public Sale? Sale { get; set; }
 
-        [ForeignKey(nameof(ProductId))]
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
     }
 }
