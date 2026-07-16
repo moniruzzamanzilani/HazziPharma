@@ -10,6 +10,10 @@ namespace HazziPharma.Web.ViewModels
 
         [DataType(DataType.Date)]
         public DateTime SaleDate { get; set; } = DateTime.Today;
+        
+        public int? CustomerId { get; set; }
+
+        public List<SelectListItem> Customers { get; set; } = new();
 
         public string? InvoiceNo { get; set; }
 

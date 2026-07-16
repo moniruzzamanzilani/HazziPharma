@@ -11,6 +11,10 @@ namespace HazziPharma.Web.Models
 
         [Required]
         public DateTime SaleDate { get; set; }
+       
+        public int? CustomerId { get; set; }
+
+        public Customer? Customer { get; set; }
 
         [Required]
         public decimal TotalAmount { get; set; }

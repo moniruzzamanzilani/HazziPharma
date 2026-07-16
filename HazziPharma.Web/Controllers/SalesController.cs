@@ -34,7 +34,13 @@ namespace HazziPharma.Web.Controllers
         public async Task<IActionResult> Create()
         {
             var model = new SaleViewModel();
-
+            model.Customers = await _context.Customers
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                    .ToListAsync();
             model.Items.Add(new SaleDetailViewModel
             {
                 Products = await _context.Products
@@ -44,6 +50,7 @@ namespace HazziPharma.Web.Controllers
                         Text = p.Name
                     })
                     .ToListAsync()
+
             });
 
             return View(model);
@@ -125,7 +132,13 @@ namespace HazziPharma.Web.Controllers
                         })
                         .ToListAsync();
                 }
-
+                model.Customers = await _context.Customers
+                        .Select(c => new SelectListItem
+                        {
+                            Value = c.Id.ToString(),
+                            Text = c.Name
+                        })
+                        .ToListAsync();
                 return View(model);
             }
             // ===== DEBUG END =====
@@ -158,7 +171,14 @@ namespace HazziPharma.Web.Controllers
                         })
                         .ToListAsync();
                 }
-
+                
+                model.Customers = await _context.Customers
+                        .Select(c => new SelectListItem
+                        {
+                            Value = c.Id.ToString(),
+                            Text = c.Name
+                        })
+                        .ToListAsync();
                 return View(model);
             }
 
@@ -167,6 +187,7 @@ namespace HazziPharma.Web.Controllers
             {
                 SaleNo = model.SaleNo,
                 SaleDate = model.SaleDate,
+                CustomerId = model.CustomerId,
                 InvoiceNo = model.InvoiceNo,
                 Remarks = model.Remarks,
                 TotalAmount = model.Items.Sum(x => x.SubTotal ?? 0)

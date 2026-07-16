@@ -76,7 +76,8 @@
                                           currentController == "Generics" ||
                                           currentController == "Companies" ||
                                           currentController == "Categories" ||
-                                          currentController == "Suppliers"
+                                          currentController == "Suppliers"  ||
+                                          currentController == "Customers"
                                           ? "" : "collapsed")"
                                     type="button"
                                     data-bs-toggle="collapse"
@@ -95,7 +96,8 @@
                                    currentController == "Generics" ||
                                    currentController == "Companies" ||
                                    currentController == "Categories" ||
-                                   currentController == "Suppliers"
+                                   currentController == "Suppliers"  ||
+                                   currentController == "Customers"
                                    ? "show" : "")">
 
                             <div class="accordion-body p-0">
@@ -127,6 +129,11 @@
                                    asp-controller="Suppliers"
                                    asp-action="Index">
                                     Suppliers
+                                </a>
+                                <a class="nav-link ps-5"
+                                       asp-controller="Customers"
+                                       asp-action="Index">
+                                        Customers
                                 </a>
 
                             </div>

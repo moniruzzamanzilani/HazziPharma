@@ -16,7 +16,7 @@ namespace HazziPharma.Web.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PurchaseDetail> PurchaseDetails { get; set; }
        
@@ -29,7 +29,11 @@ namespace HazziPharma.Web.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Sale>()
+                .HasOne(s => s.Customer)
+                .WithMany()
+                .HasForeignKey(s => s.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.PurchasePrice)
@@ -49,6 +53,7 @@ namespace HazziPharma.Web.Data
             modelBuilder.Entity<PurchaseDetail>()
                 .Property(p => p.SubTotal)
                 .HasPrecision(18, 2);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
