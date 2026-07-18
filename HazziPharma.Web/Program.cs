@@ -1,12 +1,14 @@
 using HazziPharma.Web.Data;
-using Microsoft.AspNetCore.Identity;
 using HazziPharma.Web.Seed;
+using HazziPharma.Web.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<NumberGeneratorService>();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<HazziPharmaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HazziPharmaDbContext")));

@@ -15,6 +15,13 @@ namespace HazziPharma.Web.ViewModels
         public string? InvoiceNo { get; set; }
 
         public string? Remarks { get; set; }
+        public decimal TotalAmount { get; set; }
+
+        public decimal Discount { get; set; }
+
+        public decimal PaidAmount { get; set; }
+
+        public decimal DueAmount { get; set; }
 
         public List<SelectListItem> Suppliers { get; set; } = new();
 

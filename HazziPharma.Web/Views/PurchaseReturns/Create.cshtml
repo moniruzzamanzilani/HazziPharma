@@ -1,0 +1,321 @@
+﻿@model HazziPharma.Web.ViewModels.PurchaseReturnViewModel
+
+@{
+    ViewData["Title"] = "Purchase Return";
+}
+
+<h2 class="mb-4">Purchase Return</h2>
+
+<form method="post">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <label class="form-label">Return No</label>
+            <input asp-for="ReturnNo" class="form-control" readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Return Date</label>
+            <input asp-for="ReturnDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Purchase</label>
+
+            <select asp-for="PurchaseId"
+                asp-items="Model.Purchases"
+                class="form-select"
+                id="purchaseId">
+                <span id="test"></span>
+                <option value="">-- Select Purchase --</option>
+            </select>
+        </div>
+
+    </div>
+    <hr />
+
+    <h4>Return Items</h4>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th width="30%">Medicine</th>
+                <th width="13%">Return Qty</th>
+                <th width="15%">Return Price</th>
+                <th width="15%">Batch No</th>
+                <th width="15%">Expiry Date</th>
+                <th width="16%">Sub Total</th>
+                <th width="8%">Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="purchaseItems">
+            <tr>
+                <td>
+                    <select asp-for="Items[0].ProductId"
+                            asp-items="Model.Items[0].Products"
+                            class="form-select">
+                        <option value="">-- Select Medicine --</option>
+                    </select>
+                </td>
+
+                <td>
+                    <input asp-for="Items[0].Quantity" class="form-control qty" min="1" />
+                </td>
+
+                <td>
+                    <input asp-for="Items[0].ReturnPrice" class="form-control price" />
+                </td>
+                
+                <td>
+                    <input asp-for="Items[0].BatchNo"
+                           class="form-control batchNo"
+                           readonly />
+                </td>
+
+                <td>
+                    <input asp-for="Items[0].ExpiryDate"
+                           type="date"
+                           class="form-control expiryDate"
+                           readonly />
+                </td>
+
+                <td>
+                    <input asp-for="Items[0].SubTotal" class="form-control subtotal" readonly />
+                </td>
+
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm btnRemove">
+                        ❌
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row mt-3">
+
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Grand Total</label>
+            <input asp-for="TotalAmount"
+                   id="grandTotal"
+                   class="form-control fw-bold"
+                   readonly />
+        </div>
+
+    </div>
+    <div class="mt-3">
+        <button type="button" id="btnAddItem" class="btn btn-success">
+            + Add Item
+        </button>
+
+        <button type="submit" class="btn btn-primary">
+            Save Purchase
+        </button>
+    </div>
+</form>
+<script>
+                function updateRowIndex() {
+
+                let rows = document.querySelectorAll("#purchaseItems tr");
+
+                rows.forEach(function (row, index) {
+
+                    row.querySelectorAll("input, select").forEach(function (control) {
+
+                        if (control.name) {
+                            control.name = control.name.replace(/Items\[\d+\]/, `Items[${index}]`);
+                        }
+
+                        if (control.id) {
+                            control.id = control.id.replace(/Items_\d+__/, `Items_${index}__`);
+                        }
+
+                    });
+
+                });
+
+            }
+            function calculateGrandTotal() {
+
+            let grandTotal = 0;
+
+            document.querySelectorAll(".subtotal").forEach(function (item) {
+
+                grandTotal += parseFloat(item.value) || 0;
+
+            });
+
+            document.getElementById("grandTotal").value = grandTotal.toFixed(2);
+                document.getElementById("TotalAmount").value = grandTotal.toFixed(2);
+
+            calculateDue();
+        }
+            function calculateDue() {
+
+            let total = parseFloat(document.getElementById("grandTotal").value) || 0;
+
+            let discount = parseFloat(document.getElementById("discount").value) || 0;
+
+            let paid = parseFloat(document.getElementById("paidAmount").value) || 0;
+
+            let due = total - discount - paid;
+
+            if (due < 0) {
+                due = 0;
+            }
+
+            document.getElementById("dueAmount").value = due.toFixed(2);
+        }
+
+    function calculateRow(row) {
+
+        let qty = parseFloat(row.querySelector(".qty").value) || 0;
+        let price = parseFloat(row.querySelector(".price").value) || 0;
+
+        let total = qty * price;
+
+        row.querySelector(".subtotal").value = total.toFixed(2);
+        calculateGrandTotal();
+    }
+
+    // Qty বা Price পরিবর্তন হলে
+    document.addEventListener("input", function (e) {
+
+        if (e.target.classList.contains("qty") ||
+            e.target.classList.contains("price")) {
+
+            let row = e.target.closest("tr");
+            calculateRow(row);
+
+        }
+
+    });
+        document.addEventListener("input", function (e) {
+
+            if (e.target.id === "discount" ||
+                e.target.id === "paidAmount") {
+
+                calculateDue();
+            }
+
+        });
+
+    // Add Item
+    document.getElementById("btnAddItem").addEventListener("click", function () {
+
+        let tbody = document.getElementById("purchaseItems");
+
+        let firstRow = tbody.rows[0];
+
+        let newRow = firstRow.cloneNode(true);
+
+            newRow.querySelectorAll("input").forEach(input => {
+            input.value = "";
+        });
+
+        newRow.querySelectorAll("select").forEach(select => {
+            select.selectedIndex = 0;
+        });
+
+        tbody.appendChild(newRow);
+
+        updateRowIndex();
+
+    });
+    // Remove Item
+    document.addEventListener("click", function (e) {
+
+        if (e.target.classList.contains("btnRemove")) {
+
+            let tbody = document.getElementById("purchaseItems");
+
+            // minumun one Row
+            if (tbody.rows.length == 1) {
+
+                alert("At least one item is required.");
+                return;
+            }
+            // যে Row-এর Delete Button চাপা হয়েছে সেটি Remove
+            e.target.closest("tr").remove();
+
+            // Row Index Update
+            updateRowIndex();
+
+            // Grand Total Update
+            calculateGrandTotal();
+        }
+
+    });
+        // ================================
+    // Load Products by Purchase
+    // ================================
+    document.getElementById("purchaseId").addEventListener("change", function () {
+
+        let purchaseId = this.value;
+        document.getElementById("test").innerText = purchaseId;
+
+        if (purchaseId === "")
+            return;
+
+        fetch('/PurchaseReturns/GetPurchaseProducts?purchaseId=' + purchaseId)
+            .then(response => response.json())
+            .then(data => {
+
+                let productDropdown = document.querySelector("#purchaseItems select");
+
+                productDropdown.innerHTML = "";
+
+                let defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.text = "-- Select Medicine --";
+
+                productDropdown.appendChild(defaultOption);
+
+                data.forEach(function (item) {
+
+                let option = document.createElement("option");
+
+                option.value = item.productId;
+                option.text = item.productName;
+
+                option.setAttribute("data-price", item.purchasePrice);
+                option.setAttribute("data-batch", item.batchNo);
+                option.setAttribute("data-expiry", item.expiryDate);
+
+                productDropdown.appendChild(option);
+
+            });
+
+            });
+
+    });
+         // =====================================
+    // Product Change → Auto Fill
+    // =====================================
+    document.addEventListener("change", function (e) {
+
+        if (e.target.matches("#purchaseItems select")) {
+
+            let row = e.target.closest("tr");
+
+            let selected = e.target.options[e.target.selectedIndex];
+
+            row.querySelector(".price").value =
+                selected.getAttribute("data-price") || "";
+
+            row.querySelector(".batchNo").value =
+                selected.getAttribute("data-batch") || "";
+
+           let expiry = selected.getAttribute("data-expiry");
+
+                if (expiry) {
+                    row.querySelector(".expiryDate").value = expiry.substring(0, 10);
+                }
+
+            calculateRow(row);
+        }
+
+    });
+</script>
+    

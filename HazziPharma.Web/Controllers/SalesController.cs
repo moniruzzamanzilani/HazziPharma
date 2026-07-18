@@ -2,6 +2,7 @@
 using HazziPharma.Web.Data;
 using HazziPharma.Web.Models;
 using HazziPharma.Web.ViewModels;
+using HazziPharma.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,14 @@ namespace HazziPharma.Web.Controllers
     public class SalesController : Controller
     {
         private readonly HazziPharmaDbContext _context;
+        private readonly NumberGeneratorService _numberGenerator;
 
-        public SalesController(HazziPharmaDbContext context)
+        public SalesController(
+            HazziPharmaDbContext context,
+            NumberGeneratorService numberGenerator)
         {
             _context = context;
+            _numberGenerator = numberGenerator;
         }
         [HttpGet]
         public async Task<IActionResult> Index() 
@@ -34,6 +39,8 @@ namespace HazziPharma.Web.Controllers
         public async Task<IActionResult> Create()
         {
             var model = new SaleViewModel();
+            model.SaleNo = await _numberGenerator.GenerateSaleNoAsync();
+            model.InvoiceNo = await _numberGenerator.GenerateInvoiceNoAsync();
             model.Customers = await _context.Customers
                     .Select(c => new SelectListItem
                     {

@@ -19,7 +19,10 @@ namespace HazziPharma.Web.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PurchaseDetail> PurchaseDetails { get; set; }
-       
+        public DbSet<PurchaseReturn> PurchaseReturns { get; set; }
+
+        public DbSet<PurchaseReturnDetail> PurchaseReturnDetails { get; set; }
+
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleDetail> SaleDetails { get; set; }
         public DbSet<CompanyProfile> CompanyProfiles { get; set; }

@@ -2,6 +2,7 @@
 using HazziPharma.Web.Data;
 using HazziPharma.Web.Models;
 using HazziPharma.Web.ViewModels;
+using HazziPharma.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,14 @@ namespace HazziPharma.Web.Controllers
     public class PurchaseController : Controller
     {
         private readonly HazziPharmaDbContext _context;
+        private readonly NumberGeneratorService _numberGenerator;
 
-        public PurchaseController(HazziPharmaDbContext context)
+        public PurchaseController(
+    HazziPharmaDbContext context,
+    NumberGeneratorService numberGenerator)
         {
             _context = context;
+            _numberGenerator = numberGenerator;
         }
         // =========================
         // GET: Purchase
@@ -35,6 +40,8 @@ namespace HazziPharma.Web.Controllers
         public async Task<IActionResult> Create()
         {
             var model = new PurchaseViewModel();
+            model.PurchaseNo = await _numberGenerator.GeneratePurchaseNoAsync();
+            model.InvoiceNo = await _numberGenerator.GeneratePurchaseInvoiceNoAsync();
 
             model.Suppliers = await _context.Suppliers
                 .Select(s => new SelectListItem
@@ -112,7 +119,11 @@ namespace HazziPharma.Web.Controllers
                 PurchaseDate = model.PurchaseDate,
                 InvoiceNo = model.InvoiceNo,
                 Remarks = model.Remarks,
-                TotalAmount = model.Items.Sum(x => x.SubTotal)
+
+                TotalAmount = model.TotalAmount,
+                Discount = model.Discount,
+                PaidAmount = model.PaidAmount,
+                DueAmount = model.DueAmount
             };
 
             _context.Purchases.Add(purchase);
