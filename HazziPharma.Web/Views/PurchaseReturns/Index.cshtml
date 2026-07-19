@@ -1,0 +1,38 @@
+﻿@model IEnumerable<HazziPharma.Web.Models.PurchaseReturn>
+
+@{
+    ViewData["Title"] = "Purchase Return List";
+}
+
+<h2 class="mb-3">Purchase Return List</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Return No</th>
+            <th>Return Date</th>
+            <th>Purchase No</th>
+            <th>Total Amount</th>
+            <th width="120">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ReturnNo</td>
+                <td>@item.ReturnDate.ToString("dd-MMM-yyyy")</td>
+                <td>@item.Purchase?.PurchaseNo</td>
+                <td>@item.TotalAmount.ToString("0.00")</td>
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info btn-sm">
+                        View
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

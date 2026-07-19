@@ -55,6 +55,32 @@ namespace HazziPharma.Web.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var returns = await _context.PurchaseReturns
+                .Include(x => x.Purchase)
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            return View(returns);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var purchaseReturn = await _context.PurchaseReturns
+                .Include(x => x.Purchase)
+                .Include(x => x.PurchaseReturnDetails)
+                    .ThenInclude(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (purchaseReturn == null)
+            {
+                return NotFound();
+            }
+
+            return View(purchaseReturn);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PurchaseReturnViewModel model)

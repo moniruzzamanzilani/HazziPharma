@@ -1,0 +1,58 @@
+﻿@model HazziPharma.Web.Models.PurchaseReturn
+
+@{
+    ViewData["Title"] = "Purchase Return Details";
+}
+
+<h2 class="mb-3">Purchase Return Details</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th width="200">Return No</th>
+        <td>@Model.ReturnNo</td>
+    </tr>
+    <tr>
+        <th>Return Date</th>
+        <td>@Model.ReturnDate.ToString("dd-MMM-yyyy")</td>
+    </tr>
+    <tr>
+        <th>Purchase No</th>
+        <td>@Model.Purchase?.PurchaseNo</td>
+    </tr>
+    <tr>
+        <th>Total Amount</th>
+        <td>@Model.TotalAmount.ToString("0.00")</td>
+    </tr>
+    <tr>
+        <th>Remarks</th>
+        <td>@Model.Remarks</td>
+    </tr>
+</table>
+
+<h4 class="mt-4">Returned Items</h4>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Medicine</th>
+            <th>Return Qty</th>
+            <th>Return Price</th>
+            <th>Sub Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PurchaseReturnDetails)
+        {
+            <tr>
+                <td>@item.Product?.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.ReturnPrice.ToString("0.00")</td>
+                <td>@item.SubTotal.ToString("0.00")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Back to List
+</a>
