@@ -101,5 +101,23 @@ namespace HazziPharma.Web.Services
 
             return $"PR-{(maxNumber + 1):D6}";
         }
+        public async Task<string> GenerateSaleReturnNoAsync()
+        {
+            var numbers = await _context.SaleReturns
+                .Where(x => !string.IsNullOrEmpty(x.ReturnNo))
+                .Select(x => x.ReturnNo!)
+                .ToListAsync();
+
+            int maxNumber = numbers
+                .Select(x =>
+                {
+                    var digits = new string(x.Where(char.IsDigit).ToArray());
+                    return int.TryParse(digits, out int n) ? n : 0;
+                })
+                .DefaultIfEmpty(0)
+                .Max();
+
+            return $"SR-{(maxNumber + 1):D6}";
+        }
     }
 }

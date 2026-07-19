@@ -1,0 +1,38 @@
+﻿@model HazziPharma.Web.ViewModels.SaleReturnViewModel
+
+@{
+    ViewData["Title"] = "Sale Return";
+}
+
+<h3 class="mb-3">Sale Return</h3>
+
+<form asp-action="Create" method="post">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <label class="form-label">Return No</label>
+            <input asp-for="ReturnNo" class="form-control" readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Return Date</label>
+            <input asp-for="ReturnDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Sale</label>
+
+            <select asp-for="SaleId"
+                    asp-items="Model.Sales"
+                    class="form-select">
+
+                <option value="">-- Select Sale --</option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</form>

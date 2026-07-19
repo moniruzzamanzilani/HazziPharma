@@ -29,6 +29,9 @@ namespace HazziPharma.Web.Data
         
         public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<SaleReturn> SaleReturns { get; set; }
+
+        public DbSet<SaleReturnDetail> SaleReturnDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
