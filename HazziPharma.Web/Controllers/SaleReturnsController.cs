@@ -115,7 +115,9 @@ namespace HazziPharma.Web.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return Content("Sale Return Header Saved");
+            TempData["Success"] = "Sale Return Saved Successfully.";
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
