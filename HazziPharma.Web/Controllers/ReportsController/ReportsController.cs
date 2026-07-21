@@ -103,6 +103,38 @@ namespace HazziPharma.Web.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> PurchaseReturnReport(DateTime? fromDate, DateTime? toDate)
+        {
+            var query = _context.PurchaseReturns
+                .Include(x => x.Purchase)
+                    .ThenInclude(x => x.Supplier)
+                .AsQueryable();
+
+            if (fromDate.HasValue)
+            {
+                query = query.Where(x => x.ReturnDate.Date >= fromDate.Value.Date);
+            }
+
+            if (toDate.HasValue)
+            {
+                query = query.Where(x => x.ReturnDate.Date <= toDate.Value.Date);
+            }
+
+            var purchaseReturns = await query
+                .OrderByDescending(x => x.ReturnDate)
+                .ToListAsync();
+
+            var model = new PurchaseReturnReportViewModel
+            {
+                FromDate = fromDate ?? DateTime.Today,
+                ToDate = toDate ?? DateTime.Today,
+                PurchaseReturns = purchaseReturns,
+                TotalReturnAmount = purchaseReturns.Sum(x => x.TotalAmount)
+            };
+
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> SalesReport(DateTime? fromDate, DateTime? toDate)

@@ -1,0 +1,86 @@
+﻿@model HazziPharma.Web.ViewModels.PurchaseReturnReportViewModel
+
+@{
+    ViewData["Title"] = "Purchase Return Report";
+}
+
+<h3 class="mb-3">Purchase Return Report</h3>
+
+<form method="get">
+
+    <div class="row mb-3">
+
+        <div class="col-md-3">
+            <label>From Date</label>
+            <input asp-for="FromDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label>To Date</label>
+            <input asp-for="ToDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button class="btn btn-primary w-100">
+                Search
+            </button>
+        </div>
+
+    </div>
+
+</form>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+            <th>Return No</th>
+            <th>Return Date</th>
+            <th>Purchase No</th>
+            <th>Supplier</th>
+            <th class="text-end">Return Amount</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.PurchaseReturns)
+        {
+            <tr>
+
+                <td>@item.ReturnNo</td>
+
+                <td>@item.ReturnDate.ToString("dd-MMM-yyyy")</td>
+
+                <td>@item.Purchase?.PurchaseNo</td>
+
+                <td>@item.Purchase?.Supplier?.Name</td>
+
+                <td class="text-end">
+                    @item.TotalAmount.ToString("0.00")
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+    <tfoot>
+
+        <tr>
+
+            <th colspan="4" class="text-end">
+                Total Return Amount
+            </th>
+
+            <th class="text-end">
+                @Model.TotalReturnAmount.ToString("0.00")
+            </th>
+
+        </tr>
+
+    </tfoot>
+
+</table>

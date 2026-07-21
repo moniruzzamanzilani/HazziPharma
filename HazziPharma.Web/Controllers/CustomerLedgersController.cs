@@ -73,6 +73,7 @@ namespace HazziPharma.Web.Controllers
 
                 item.Balance = balance;
             }
+
             return View(model);
         }
     }
