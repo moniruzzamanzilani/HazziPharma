@@ -1,0 +1,81 @@
+﻿@model HazziPharma.Web.ViewModels.CustomerLedgerViewModel
+
+@{
+    ViewData["Title"] = "Customer Ledger";
+}
+
+<h3 class="mb-3">Customer Ledger</h3>
+
+<form method="get">
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <label class="form-label">Customer</label>
+
+            <select asp-for="CustomerId"
+                    asp-items="Model.Customers"
+                    class="form-select">
+
+                <option value="">-- Select Customer --</option>
+
+            </select>
+
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+
+            <button class="btn btn-primary w-100">
+                Show Ledger
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+<hr />
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Date</th>
+            <th>Type</th>
+            <th>Voucher</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Balance</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.Ledger)
+        {
+            <tr>
+
+                <td>@item.Date.ToString("dd-MMM-yyyy")</td>
+
+                <td>@item.Type</td>
+
+                <td>@item.VoucherNo</td>
+
+                <td>@item.Debit.ToString("0.00")</td>
+
+                <td>@item.Credit.ToString("0.00")</td>
+
+                <td>@item.Balance.ToString("0.00")</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
