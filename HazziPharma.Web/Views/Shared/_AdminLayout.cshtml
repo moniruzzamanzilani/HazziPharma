@@ -180,13 +180,94 @@
                                    asp-action="Index">
                                     Purchases
                                 </a>
+                                
+                                <a class="nav-link ps-5"
+                                   asp-controller="PurchaseReturns"
+                                   asp-action="Index">
+                                    Purchase Return
+                                </a>
 
+                                <a class="nav-link ps-5"
+                                   asp-controller="SupplierLedgers"
+                                   asp-action="Index">
+                                    Supplier Ledger
+                                </a>
                                 
                             </div>
 
                         </div>
 
                     </div>
+                    
+                        <!-- Reports -->
+
+                        <div class="accordion-item sidebar-item">
+
+                            <h2 class="accordion-header">
+
+                                <button class="accordion-button sidebar-accordion collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#reportsMenu">
+
+                                    <i class="bi bi-file-earmark-bar-graph-fill me-2"></i>
+                                    Reports
+
+                                </button>
+
+                            </h2>
+
+                            <div id="reportsMenu"
+                                 class="accordion-collapse collapse">
+
+                                <div class="accordion-body p-0">
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Reports"
+                                       asp-action="StockReport">
+                                        Stock Report
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Reports"
+                                       asp-action="ExpiryReport">
+                                        Expiry Report
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Reports"
+                                       asp-action="PurchaseReport">
+                                        Purchase Report
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Reports"
+                                       asp-action="PurchaseReturnReport">
+                                        Purchase Return Report
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Reports"
+                                       asp-action="SalesReport">
+                                        Sales Report
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="Reports"
+                                       asp-action="SaleReturnReport">
+                                        Sale Return Report
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       href="#">
+                                        Cash Book
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
                         <div class="accordion-item sidebar-item">
 
                             <h2 class="accordion-header">
@@ -216,6 +297,17 @@
                                         Sales
                                     </a>
 
+                                    <a class="nav-link ps-5"
+                                       asp-controller="SaleReturns"
+                                       asp-action="Index">
+                                        Sale Return
+                                    </a>
+
+                                    <a class="nav-link ps-5"
+                                       asp-controller="CustomerLedgers"
+                                       asp-action="Index">
+                                        Customer Ledger
+                                    </a>
                                 </div>
 
                             </div>
