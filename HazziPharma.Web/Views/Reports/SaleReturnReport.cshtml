@@ -1,14 +1,14 @@
-﻿@model HazziPharma.Web.ViewModels.PurchaseReturnReportViewModel
+﻿@model HazziPharma.Web.ViewModels.SaleReturnReportViewModel
 
 @{
-    ViewData["Title"] = "Purchase Return Report";
+    ViewData["Title"] = "Sale Return Report";
 }
 
 <div class="text-center mb-4">
 
     <h2 class="mb-0">🏥 Hazzi Pharma</h2>
 
-    <h5 class="text-secondary">Purchase Return Report</h5>
+    <h5 class="text-secondary">Sale Return Report</h5>
 
     <small>
         Generated On:
@@ -50,8 +50,11 @@
 </form>
 
 <div class="mt-2 mb-2">
+
     <strong>Total Records:</strong>
-    @Model.PurchaseReturns.Count()
+
+    @Model.SaleReturns.Count()
+
 </div>
 
 <table class="table table-bordered table-striped">
@@ -61,9 +64,9 @@
         <tr>
             <th>Action</th>
             <th>Return No</th>
-            <th>Purchase No</th>
-            <th>Supplier</th>
-            <th>Return Date</th>
+            <th>Sale No</th>
+            <th>Customer</th>
+            <th>Date</th>
             <th class="text-end">Return Amount</th>
         </tr>
 
@@ -71,12 +74,12 @@
 
     <tbody>
 
-        @foreach (var item in Model.PurchaseReturns)
+        @foreach (var item in Model.SaleReturns)
         {
             <tr>
 
                 <td>
-                    <a asp-controller="PurchaseReturns"
+                    <a asp-controller="SaleReturns"
                        asp-action="Details"
                        asp-route-id="@item.Id"
                        class="btn btn-sm btn-info">
@@ -86,9 +89,9 @@
 
                 <td>@item.ReturnNo</td>
 
-                <td>@item.Purchase?.PurchaseNo</td>
+                <td>@item.Sale?.SaleNo</td>
 
-                <td>@item.Purchase?.Supplier?.Name</td>
+                <td>@item.Sale?.Customer?.Name</td>
 
                 <td>@item.ReturnDate.ToString("dd-MM-yyyy")</td>
 
@@ -106,7 +109,7 @@
         <tr>
 
             <th colspan="5" class="text-end">
-                Total Return Amount
+                Grand Total
             </th>
 
             <th class="text-end">
