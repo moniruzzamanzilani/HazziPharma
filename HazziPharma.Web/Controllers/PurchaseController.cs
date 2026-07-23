@@ -69,14 +69,9 @@ namespace HazziPharma.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PurchaseViewModel model)
         {
-           
+
             if (!ModelState.IsValid)
             {
-                var errors = ModelState
-      .Where(x => x.Value!.Errors.Count > 0)
-      .Select(x => $"{x.Key} => {string.Join(", ", x.Value!.Errors.Select(e => e.ErrorMessage))}");
-
-                return Content(string.Join("\n", errors));
                 model.Suppliers = await _context.Suppliers
                     .Select(s => new SelectListItem
                     {
@@ -95,20 +90,34 @@ namespace HazziPharma.Web.Controllers
                         })
                         .ToListAsync();
                 }
-               
-                    foreach (var error in ModelState)
+
+                return View(model);
+            }
+
+            if (model.Items == null || !model.Items.Any())
+            {
+                ModelState.AddModelError("", "Please add at least one medicine.");
+
+                model.Suppliers = await _context.Suppliers
+                    .Select(s => new SelectListItem
                     {
-                        foreach (var item in error.Value.Errors)
+                        Value = s.Id.ToString(),
+                        Text = s.Name
+                    })
+                    .ToListAsync();
+
+                foreach (var item in model.Items)
+                {
+                    item.Products = await _context.Products
+                        .Select(p => new SelectListItem
                         {
-                            Console.WriteLine($"{error.Key} => {item.ErrorMessage}");
-                        }
-                    }
+                            Value = p.Id.ToString(),
+                            Text = p.Name
+                        })
+                        .ToListAsync();
+                }
 
-                    // Suppliers Load...
-                    // Products Load...
-
-                    return View(model);
-               
+                return View(model);
             }
 
             // Purchase Header

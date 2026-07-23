@@ -162,10 +162,20 @@ namespace HazziPharma.Web.Controllers
                 }
                 else if (product.Stock < item.Quantity)
                 {
-                    ModelState.AddModelError("", $"{product.Name} has only {product.Stock} in stock.");
+                    ModelState.AddModelError("",
+                         $"Insufficient stock for {product.Name}. Requested: {item.Quantity}, Available: {product.Stock}.");
                 }
             }
+              var duplicateProducts = model.Items
+                        .GroupBy(x => x.ProductId)
+                        .Where(g => g.Key > 0 && g.Count() > 1)
+                        .ToList();
 
+                        if (duplicateProducts.Any())
+                        {
+                            ModelState.AddModelError("", "Same medicine cannot be added multiple times.");
+                        }
+             
             if (!ModelState.IsValid)
             {
                 foreach (var item in model.Items)

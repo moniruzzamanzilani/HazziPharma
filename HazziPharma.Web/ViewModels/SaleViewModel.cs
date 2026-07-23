@@ -10,7 +10,8 @@ namespace HazziPharma.Web.ViewModels
 
         [DataType(DataType.Date)]
         public DateTime SaleDate { get; set; } = DateTime.Today;
-        
+
+        [Required(ErrorMessage = "Please select a customer.")]
         public int? CustomerId { get; set; }
 
         public List<SelectListItem> Customers { get; set; } = new();
@@ -19,6 +20,8 @@ namespace HazziPharma.Web.ViewModels
 
         public string? Remarks { get; set; }
 
+        [Range(0.01, double.MaxValue,
+         ErrorMessage = "Grand Total must be greater than zero.")]
         public decimal GrandTotal { get; set; }
 
         public List<SaleDetailViewModel> Items { get; set; } = new();

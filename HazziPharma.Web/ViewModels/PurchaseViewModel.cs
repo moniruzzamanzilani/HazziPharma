@@ -7,14 +7,19 @@ namespace HazziPharma.Web.ViewModels
     {
         public string PurchaseNo { get; set; } = "";
 
-        [Required]
+        [Required(ErrorMessage = "Supplier is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a supplier.")]
         public int SupplierId { get; set; }
 
+        [Required(ErrorMessage = "Purchase date is required.")]
         public DateTime PurchaseDate { get; set; } = DateTime.Today;
 
+        [Required(ErrorMessage = "Invoice No is required.")]
         public string? InvoiceNo { get; set; }
 
+        [StringLength(500)]
         public string? Remarks { get; set; }
+
         public decimal TotalAmount { get; set; }
 
         public decimal Discount { get; set; }
