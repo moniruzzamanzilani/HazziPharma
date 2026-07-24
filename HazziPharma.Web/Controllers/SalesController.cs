@@ -227,7 +227,54 @@ namespace HazziPharma.Web.Controllers
                 };
 
                 _context.SaleDetails.Add(detail);
+                var purchaseBatches = await _context.PurchaseDetails
+                    .Where(x => x.ProductId == item.ProductId &&
+                                x.RemainingQty > 0)
+                    .OrderBy(x => x.Id)
+                    .ToListAsync();
+                int qtyToSell = item.Quantity;
 
+                foreach (var batch in purchaseBatches)
+                {
+                    if (qtyToSell <= 0)
+                        break;
+
+                    if (batch.RemainingQty >= qtyToSell)
+                    {
+                        batch.RemainingQty -= qtyToSell;
+                        qtyToSell = 0;
+                    }
+                    else
+                    {
+                        qtyToSell -= batch.RemainingQty;
+                        batch.RemainingQty = 0;
+                    }
+                }
+                if (qtyToSell > 0)
+                {
+                    ModelState.AddModelError("", "Not enough stock available.");
+
+                    foreach (var saleItem in model.Items)
+                    {
+                        saleItem.Products = await _context.Products
+                            .Select(p => new SelectListItem
+                            {
+                                Value = p.Id.ToString(),
+                                Text = p.Name
+                            })
+                            .ToListAsync();
+                    }
+
+                    model.Customers = await _context.Customers
+                        .Select(c => new SelectListItem
+                        {
+                            Value = c.Id.ToString(),
+                            Text = c.Name
+                        })
+                        .ToListAsync();
+
+                    return View(model);
+                }
                 var product = await _context.Products
                     .FirstAsync(p => p.Id == item.ProductId);
 

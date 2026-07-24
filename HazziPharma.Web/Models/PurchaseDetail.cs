@@ -19,6 +19,7 @@ namespace HazziPharma.Web.Models
         public decimal PurchasePrice { get; set; }
 
         public int Quantity { get; set; }
+        public int RemainingQty { get; set; }
 
         public string? BatchNo { get; set; }
 

@@ -150,6 +150,7 @@ namespace HazziPharma.Web.Controllers
                     ProductId = item.ProductId,
                     PurchasePrice = item.PurchasePrice,
                     Quantity = item.Quantity,
+                    RemainingQty = item.Quantity,
                     BatchNo = item.BatchNo,
                     ExpiryDate = item.ExpiryDate,
                     SubTotal = item.SubTotal
